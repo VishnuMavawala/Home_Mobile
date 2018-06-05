@@ -39,26 +39,14 @@ export default class home extends React.Component {
     {
         var btn=this.state.btn;
         btn[index].value=!btn[index].value;
+        this.setState({ btn });
 
         axios.post(`${pusherConfig.restServer}/api/${pusherConfig.user}/part`, btn);
     }
 
-    /*onSendMessage(text) {
-        const payload = {
-            message: text
-        };
-        fetch(`${pusherConfig.restServer}/users/${this.props.name}/messages`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        });
-    }*/
-
     render() {
         return (
-            <View>
+            <View style={{ alignItems: 'center' }}>
                 {this.state.btn.map((data, index) =>
                     <Button title={ data.key.toString() }
                             color={data.value?'green':'red'}
