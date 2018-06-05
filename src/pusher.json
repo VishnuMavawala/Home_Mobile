@@ -1,7 +1,7 @@
 {
-  "appId":"536083",
-  "key":"838dfd84040c7cb94a09",
-  "secret":"c59f9ecae4a4a6968295",
+  "appId":"537797", //"536083",
+  "key":"32c679fbef206b43bbda", //"838dfd84040c7cb94a09",
+  "secret":"418e05186ef67ca9d122", //"c59f9ecae4a4a6968295",
   "cluster":"ap2",
   "encrypted":true,
   "restServer":"https://home-static-server.herokuapp.com"
