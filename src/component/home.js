@@ -1,6 +1,6 @@
 import React from 'react';
 import Pusher from 'pusher-js/react-native';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, TextInput } from 'react-native';
 import axios from 'axios';
 import pusherConfig from '../pusher.json';
 
@@ -10,11 +10,17 @@ export default class home extends React.Component {
 
         this.state={
             btn: [],
+            user: 'u112'
         };
+    }
+
+    connectionInit()
+    {
+        this.chatChannel = this.pusher.unsubscribe(this.state.user);
 
         this.pusher = new Pusher(pusherConfig.key, pusherConfig);
 
-        this.chatChannel = this.pusher.subscribe(pusherConfig.user);
+        this.chatChannel = this.pusher.subscribe(this.state.user);
         this.chatChannel.bind('pusher:subscription_succeeded', () => {
             this.chatChannel.bind('init', (data) => {
                 this.handleInit(data);
@@ -23,16 +29,17 @@ export default class home extends React.Component {
                 this.setState({ btn });
             });
         });
-        // this.handleSendMessage = this.onSendMessage.bind(this); // (9)
+
+        axios.get(`${pusherConfig.restServer}/api/${this.state.user}/init`);
     }
 
+    componentWillUnmount()
+    {
+        this.chatChannel = this.pusher.unsubscribe(this.state.user);
+    }
     handleInit(data) {
         console.log({action: 'init', data: data});
         this.setState({btn: data});
-    }
-
-    componentDidMount() {
-        axios.get(`${pusherConfig.restServer}/api/${pusherConfig.user}/init`);
     }
 
     onChangePart(data, index)
@@ -41,12 +48,18 @@ export default class home extends React.Component {
         btn[index].value=!btn[index].value;
         this.setState({ btn });
 
-        axios.post(`${pusherConfig.restServer}/api/${pusherConfig.user}/part`, btn);
+        axios.post(`${pusherConfig.restServer}/api/${this.state.user}/part`, btn);
     }
 
     render() {
         return (
-            <View style={{ alignItems: 'center' }}>
+            <View style={{ alignItems: 'center', top: 25 }}>
+                <TextInput
+                    style={{width: 40, borderColor: 'gray'}}
+                    onChangeText={(user) => this.setState({user})}
+                    value={this.state.user}
+                />
+                <Button onPress={() => this.connectionInit()} title="Submit" />
                 {this.state.btn.map((data, index) =>
                     <Button title={ data.key.toString() }
                             color={data.value?'green':'red'}
