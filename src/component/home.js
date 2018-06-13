@@ -1,6 +1,7 @@
 import React from 'react';
 import Pusher from 'pusher-js/react-native';
-import { View, Text, Button, TextInput, AsyncStorage, ActivityIndicator } from 'react-native';
+import { View, Text, Button, TextInput, AsyncStorage, ActivityIndicator, Image } from 'react-native';
+import u112Img from '../img/u112.jpg'
 import axios from 'axios';
 // import pusherConfig from '../pusher.json';
 
@@ -64,11 +65,32 @@ export default class home extends React.Component {
             return (
             <View style={{ alignItems: 'center', top: 25 }}>
                 <Button onPress={() => this.logout()} title="Logout" />
-                {this.state.btn.map((data, index) =>
-                    <Button title={ data.key.toString() }
-                            color={data.value?'green':'red'}
-                            onPress={ ()=> this.onChangePart(data, index) } />
-                )}
+                {this.state.btn.length == 4
+                ?
+                    <View>
+                        <Image source={u112Img} style={{ width: 200, height: 200 }} />
+                        <View style={{ position: 'absolute', top: '40%', left: 0 }}>
+                            <Button title={this.state.btn[0].key.toString()} color={this.state.btn[0].value ? 'green' : 'red'} onPress={() => this.onChangePart(this.state.btn[0], 0)} />
+                        </View>
+                        <View style={{ position: 'absolute', top: '50%', right: 0 }}>
+                            <Button title={this.state.btn[1].key.toString()} color={this.state.btn[1].value ? 'green' : 'red'} onPress={() => this.onChangePart(this.state.btn[1], 1)} />
+                        </View>
+                        <View style={{ position: 'absolute', bottom: '30%', left: '15%' }}>
+                            <Button title={this.state.btn[2].key.toString()} color={this.state.btn[2].value ? 'green' : 'red'} onPress={() => this.onChangePart(this.state.btn[2], 2)} />
+                        </View>
+                        <View style={{ position: 'absolute', bottom: '4%', right: '20%' }}>
+                            <Button title={this.state.btn[3].key.toString()} color={this.state.btn[3].value ? 'green' : 'red'} onPress={() => this.onChangePart(this.state.btn[3], 3)} />
+                        </View>
+                    </View>
+                :
+                    <View>
+                        {this.state.btn.map((data, index) =>
+                            <Button title={data.key.toString()}
+                                    color={data.value ? 'green' : 'red'}
+                                    onPress={() => this.onChangePart(data, index)}/>
+                        )}
+                    </View>
+                }
             </View>
         );
     }

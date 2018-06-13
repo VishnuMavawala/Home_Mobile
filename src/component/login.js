@@ -59,7 +59,8 @@ export default class login extends Component
                         style={{height: 40, borderColor: 'gray', borderWidth: 1}}
                         onChangeText={(password) => this.setState({password})}
                         placeholder="Enter Password"
-                        value={this.state.password}/>
+                        value={this.state.password}
+                        secureTextEntry={true} />
                     <Button title="Next" onPress={() => this.checkAuthentication()} />
                 </View>
             );
